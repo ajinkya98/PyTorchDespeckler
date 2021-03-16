@@ -13,26 +13,31 @@ device = ("cuda" if torch.cuda.is_available() else "cpu")
 mean = 0.0844
 std = 0.0086
 
-#creating custom dataloader for training images
-class Train_Filtered(Dataset):
-    def __init__(self, root_dir, transform=None):
-        """" This Function sets the root directory to load images from it for training. It also sets the transform for preprocessing the images """
-        self.root_dir = root_dir
+#creating custom dataloader for training and validation images
+class Custom_Dataset(Dataset):
+    def __init__(self, train_dir,validation_dir,transform=None):
+
+        self.train_dir = train_dir
+        self.validation_dir = validation_dir
         self.transform = transform
 
     def __len__(self):
-        """ This function finds the total number of items to iterate through """
-        return len(os.listdir(self.root_dir))
+
+        return len(os.listdir(self.train_dir))
 
     def __getitem__(self, index):
-        """ This function provides instructions for fetching a single item from the dataset which can then be extended to a batch """
-        img_id = os.listdir(self.root_dir)[index]
-        img = Image.open(os.path.join(self.root_dir, img_id)).convert("RGB")
+
+        img_train_id = os.listdir(self.train_dir)[index]
+        img_validation_id = os.listdir(self.validation_dir)[index]
+        img_train = Image.open(os.path.join(self.train_dir, img_train_id)).convert("RGB")
+        img_validation = Image.open(os.path.join(self.validation_dir, img_validation_id)).convert("RGB")
 
         if self.transform is not None:
-            img = self.transform(img)
+            img_train = self.transform(img_train)
+            img_validation = self.transform(img_validation)
         g = transforms.Grayscale(num_output_channels=1)
-        return g(img/255)
+        return (g(img_train/255),g(img_validation/255))
+
 # setting the preprocessing for images before loading the batch
 transform = transforms.Compose(
         [
@@ -44,7 +49,7 @@ transform = transforms.Compose(
     )
 
 #loading the custom created dataset
-dataset = Train_Filtered("Filtered",transform=transform)
+dataset = Custom_Dataset("Original","Filtered",transform=transform)
 #creating dataloaders for train and validation for the filtered folder images
 train_set, validation_set = torch.utils.data.random_split(dataset,[340,85])
 train_loader = DataLoader(dataset=train_set, shuffle=True, batch_size=4,num_workers=2,pin_memory=True)
@@ -53,4 +58,4 @@ train_loader = DataLoader(dataset=train_set, shuffle=True, batch_size=4,num_work
 # loading the batch-wise data and storing it in GPU for testing
 if __name__ == '__main__':
     for i in train_loader:
-        print(i.size())
+        print(i[0].size(),i[1].size())
