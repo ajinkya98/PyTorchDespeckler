@@ -80,7 +80,7 @@ def poac(ll,lh,hl,hh):
     return torch.cat((torch.unsqueeze(bdash,0),torch.unsqueeze(cdash,0),torch.unsqueeze(ddash,0)),dim=0)
 
 def wavelet_inverse(ll,lowband):
-    """ Waevlet Inverse to get the reconstructed image after denoising """
+    """ Wavalet Inverse to get the reconstructed image after denoising """
     transformer = DWTInverse(wave="db3", mode="symmetric")
     return transformer((ll,[lowband]))
 
