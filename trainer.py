@@ -6,21 +6,20 @@ from torchvision import transforms
 from PIL import Image
 import torch
 from pytorch_wavelets import DWTForward,DWTInverse
-from pytictoc import TicToc
 
 # setting data loading to GPU
 device = ("cuda" if torch.cuda.is_available() else "cpu")
-Image.MAX_IMAGE_PIXELS = None
-t = TicToc()
+
 # Calc mean and std across all images for normalization
 # mean = 0.0844
 # std = 0.0086
 
 #creating custom dataloader for training and validation images
 class Custom_Dataset(Dataset):
-    def __init__(self, train_dir,transform=None):
+    def __init__(self, train_dir,validation_dir,transform=None):
 
         self.train_dir = train_dir
+        self.validation_dir = validation_dir
         self.transform = transform
 
     def __len__(self):
@@ -30,35 +29,38 @@ class Custom_Dataset(Dataset):
     def __getitem__(self, index):
 
         img_train_id = os.listdir(self.train_dir)[index]
-        img_train = Image.open(os.path.join(self.train_dir, img_train_id))
+        img_validation_id = os.listdir(self.validation_dir)[index]
+        img_train = Image.open(os.path.join(self.train_dir, img_train_id)).convert("RGB")
+        img_validation = Image.open(os.path.join(self.validation_dir, img_validation_id)).convert("RGB")
 
         if self.transform is not None:
             img_train = self.transform(img_train)
+            img_validation = self.transform(img_validation)
 
-        return img_train
+        return (img_train,img_validation)
 
 # setting the preprocessing for images before loading the batch
 transform = transforms.Compose(
         [
-            # transforms.Resize(size=(10000,10000)),
+            # transforms.Resize(size=32),
             transforms.ToTensor(),
             # transforms.Normalize(mean=mean,std=std),
             # transforms.GaussianBlur(kernel_size=5,sigma = 0.1)
-            # transforms.Grayscale(num_output_channels=1)
+            transforms.Grayscale(num_output_channels=1)
         ]
     )
 
 # hyperparameters
-batch_size = 1
+batch_size = 4
 shuffle = True
 num_workers = 2
 pin_memory = True
 
 #loading the custom created dataset
-dataset = Custom_Dataset("Tiff_images",transform=transform)
-# #creating dataloaders for train and validation for the filtered folder images
-# train_set, validation_set = torch.utils.data.random_split(dataset,[5,0])
-train_loader = DataLoader(dataset=dataset, shuffle=shuffle, batch_size=batch_size,num_workers=num_workers,pin_memory=pin_memory)
+dataset = Custom_Dataset("Original","Filtered",transform=transform)
+#creating dataloaders for train and validation for the filtered folder images
+train_set, validation_set = torch.utils.data.random_split(dataset,[340,85])
+train_loader = DataLoader(dataset=train_set, shuffle=shuffle, batch_size=batch_size,num_workers=num_workers,pin_memory=pin_memory)
 # validation_loader = DataLoader(dataset=validation_set, shuffle=shuffle, batch_size=batch_size,num_workers=num_workers, pin_memory=pin_memory)
 
 def wavelet_transform(tensor):
@@ -84,30 +86,16 @@ def wavelet_inverse(ll,lowband):
 
 # main data loading and training loop
 if __name__ == '__main__':
-    j = 0
-    for train_imgs in train_loader:
-        t.tic()
-        print(str(j)+":")
-        print("Original Image Dimension:")
-        print(train_imgs.size())
-        print(train_imgs.dtype)
+    for (train_imgs, clean_imgs) in train_loader:
         ll,lh,hl,hh = wavelet_transform(train_imgs)
         list_poac_imgs = []
         for i in range(batch_size):
             list_poac_imgs.append(poac(torch.squeeze(ll[i,:,:,:]),torch.squeeze(lh[i,:,:,:]),torch.squeeze(hl[i,:,:,:]),torch.squeeze(hh[i,:,:,:])))
-        jdash = torch.unsqueeze(torch.unsqueeze(list_poac_imgs[0],0),0)
+        jdash = torch.cat((torch.unsqueeze(torch.unsqueeze(list_poac_imgs[0],0),0),torch.unsqueeze(torch.unsqueeze(list_poac_imgs[1],0),0),torch.unsqueeze(torch.unsqueeze(list_poac_imgs[2],0),0),torch.unsqueeze(torch.unsqueeze(list_poac_imgs[3],0),0)),dim=0)
         train_img_poac=wavelet_inverse(ll,jdash) # Jdash=idwt2(A,Bdash,Cdash,Ddash,'coif3')
-        print("Image Dimensions After wavelet and POAC transform:")
-        print(train_img_poac.size())  # sanity check to ensure image size is intact after reconstruction
-        img_numpy = torch.squeeze(torch.squeeze(train_img_poac,dim=0).permute(1,2,0),dim=2).numpy()
-        t.toc()
-        print("Numpy converted Dimension:")
-        print(img_numpy.shape)
-        print(img_numpy.dtype)
-        print("-----------------------------------------------------------------------------------------")
-        img_final = Image.fromarray(img_numpy)
-        img_final.save(str(j)+".tif")
-        j+=1
+        print(train_img_poac.size(),clean_imgs.size())  # sanity check to ensure image size is intact after reconstruction
+        train_img_poac = train_img_poac.to(device)  # moving data to GPU
+        clean_imgs = clean_imgs.to(device)
 
 
 
