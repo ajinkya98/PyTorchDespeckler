@@ -55,7 +55,7 @@ num_workers = 2
 pin_memory = True
 
 #loading the custom created dataset
-dataset = Custom_Dataset("./Chris_Input",transform=transform)
+dataset = Custom_Dataset("./Input_Images",transform=transform)
 # #creating dataloaders for train and validation for the filtered folder images
 # train_set, validation_set = torch.utils.data.random_split(dataset,[5,0])
 train_loader = DataLoader(dataset=dataset, shuffle=shuffle, batch_size=batch_size,num_workers=num_workers,pin_memory=pin_memory)
@@ -108,7 +108,7 @@ if __name__ == '__main__':
         print(img_numpy.dtype)
         print("-----------------------------------------------------------------------------------------")
         img_final = Image.fromarray(img_numpy)
-        img_final.save("Testing/Output/"+str(j)+".tif")
+        img_final.save("Output_Images/"+str(j)+".tif")
         j+=1
 
 
