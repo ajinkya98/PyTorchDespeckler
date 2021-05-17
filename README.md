@@ -10,8 +10,11 @@ Note: If you are running a low end system(<16GB RAM and <i7 processor) you can c
 ## How to Convert a .img file to tiff file:
 If your dataset consists of images in .img format you can convert them to tif images before running the speckler supressor module. In the "IMG_2_TIF" folder place your .img files. Next create a folder called "out". Now run the "bin_tiff.py" file either in a code editor or command prompt and your converted tif files will be generated in the "out" folder.
 ## Results:
+
 For the Reults we have used SAR Images:
+
 Dataset Link - https://drive.google.com/drive/folders/10c5PnxnlY1ucj_SmMMcI_aNhXShaURto?usp=sharing
+
 Inorder to comapre metrics generated from this module we have used traditional descpeckling filters from SNAP sentinel software(lee, forst and lee Sigma):
 
 ![image](https://user-images.githubusercontent.com/32778343/118484113-7b50b000-b734-11eb-938a-a8740618383e.png)
