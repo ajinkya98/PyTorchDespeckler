@@ -79,7 +79,7 @@ def poac(ll,lh,hl,hh):
 
 def wavelet_inverse(ll,lowband):
     """ Wavelet Inverse to get the reconstructed image after denoising """
-    transformer = DWTInverse(wave="db11", mode="symmetric")
+    transformer = DWTInverse(wave="db3", mode="symmetric")
     return transformer((ll,[lowband]))
 
 # main data loading and training loop
