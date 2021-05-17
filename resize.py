@@ -36,7 +36,7 @@ class Custom_Dataset(Dataset):
 # setting the preprocessing for images before loading the batch
 transform = transforms.Compose(
         [
-            transforms.Resize(size=(13974,13464)),
+            transforms.Resize(size=(13974,13464)), #enter the size you want eg is put here
             transforms.ToTensor(),
             # transforms.Normalize(mean=mean,std=std),
             # transforms.GaussianBlur(kernel_size=5,sigma = 0.1)
@@ -51,7 +51,7 @@ num_workers = 2
 pin_memory = True
 
 #loading the custom created dataset
-dataset = Custom_Dataset("Tiff_images",transform=transform)
+dataset = Custom_Dataset("Output_Images",transform=transform)
 # #creating dataloaders for train and validation for the filtered folder images
 # train_set, validation_set = torch.utils.data.random_split(dataset,[5,0])
 train_loader = DataLoader(dataset=dataset, shuffle=shuffle, batch_size=batch_size,num_workers=num_workers,pin_memory=pin_memory)
@@ -64,4 +64,4 @@ if __name__ == '__main__':
         img_numpy = torch.squeeze(torch.squeeze(train_imgs,dim=0).permute(1,2,0),dim=2).numpy()
         print(img_numpy.shape)
         img_final = Image.fromarray(img_numpy)
-        img_final.save(str(j)+".tif")
+        img_final.save("Resized_Images/"+str(j)+".tif")
