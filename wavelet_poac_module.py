@@ -55,7 +55,7 @@ num_workers = 2
 pin_memory = True
 
 #loading the custom created dataset
-dataset = Custom_Dataset("Tiff_images",transform=transform)
+dataset = Custom_Dataset("./Chris_Input",transform=transform)
 # #creating dataloaders for train and validation for the filtered folder images
 # train_set, validation_set = torch.utils.data.random_split(dataset,[5,0])
 train_loader = DataLoader(dataset=dataset, shuffle=shuffle, batch_size=batch_size,num_workers=num_workers,pin_memory=pin_memory)
@@ -73,13 +73,13 @@ def poac(ll,lh,hl,hh):
     shl = torch.trace(torch.matmul(ll, torch.transpose(hl,dim0=0,dim1=1))) / torch.trace(torch.matmul(ll, torch.transpose(ll,dim0=0,dim1=1))) # shl=(trace(A*C')/trace(A*A'))
     shh = torch.trace(torch.matmul(ll, torch.transpose(hh,dim0=0,dim1=1))) / torch.trace(torch.matmul(ll, torch.transpose(ll,dim0=0,dim1=1))) # shh=(trace(A*D')/trace(A*A'))
     bdash = slh*ll  # Bdash=slh*A
-    cdash = shl*ll  # Cdash=shl*A
+    cdash = shl*ll  # Cdash=slh*A
     ddash = shh*ll  # Ddash=shh*A
     return torch.cat((torch.unsqueeze(bdash,0),torch.unsqueeze(cdash,0),torch.unsqueeze(ddash,0)),dim=0)
 
 def wavelet_inverse(ll,lowband):
     """ Wavelet Inverse to get the reconstructed image after denoising """
-    transformer = DWTInverse(wave="db3", mode="symmetric")
+    transformer = DWTInverse(wave="db11", mode="symmetric")
     return transformer((ll,[lowband]))
 
 # main data loading and training loop
@@ -91,6 +91,8 @@ if __name__ == '__main__':
         print("Original Image Dimension:")
         print(train_imgs.size())
         print(train_imgs.dtype)
+        print(train_imgs)
+        # train_imgs = torch.nan_to_num(train_imgs)
         ll,lh,hl,hh = wavelet_transform(train_imgs)
         list_poac_imgs = []
         for i in range(batch_size):
@@ -106,7 +108,7 @@ if __name__ == '__main__':
         print(img_numpy.dtype)
         print("-----------------------------------------------------------------------------------------")
         img_final = Image.fromarray(img_numpy)
-        img_final.save(str(j)+".tif")
+        img_final.save("Testing/Output/"+str(j)+".tif")
         j+=1
 
 
