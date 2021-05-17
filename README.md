@@ -13,4 +13,4 @@ If your dataset consists of images in .img format you can convert them to tif im
 For the Reults we have used SAR Images:
 Dataset Link - https://drive.google.com/drive/folders/10c5PnxnlY1ucj_SmMMcI_aNhXShaURto?usp=sharing
 Inorder to comapre metrics generated from this module we have used traditional descpeckling filters from SNAP sentinel software(lee, forst and lee Sigma):
-[Evaluation_Metrics.pdf](https://github.com/ajinkya98/PyTorchDespeckler/files/6493512/Evaluation_Metrics.pdf)
+[Evaluation_Metrics.xlsx](https://github.com/ajinkya98/PyTorchDespeckler/files/6493530/Evaluation_Metrics.xlsx)
