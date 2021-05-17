@@ -7,6 +7,8 @@ Often Times due to odd dimensions of images output may have one unit extra heigh
 ## How to Run Metrics Testing:
 Inorder to test input and output images in the "Metrics_Calculation" folder, create Two folder "Input" and "Output". Add the Noisy Images in the "Input" folder and the generated Despeckled Images in the Output folder, then via command prompt run "metrics_test.bat". A csv file for the metrics table will be generated in the "Output" folder.
 Note: If you are running a low end system(<16GB RAM and <i7 processor) you can comment out the SSIM calculation in the "metrics.py" file as it is highly compute intensive and get the csv file for other metrics.
+
+Source: https://github.com/L4TTiCe/Despeckler_FIS
 ## How to Convert a .img file to tiff file:
 If your dataset consists of images in .img format you can convert them to tif images before running the speckler supressor module. In the "IMG_2_TIF" folder place your .img files. Next create a folder called "out". Now run the "bin_tiff.py" file either in a code editor or command prompt and your converted tif files will be generated in the "out" folder.
 ## Results:
