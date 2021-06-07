@@ -30,7 +30,7 @@ Inorder to comapre metrics generated from this module we have used traditional d
 
 Installing PyTorch:
 
-[Installation Guide]:  https://pytorch.org/get-started/locally/
+Installation Guide: https://pytorch.org/get-started/locally/
 ## Tools used:
 
 1. PyTorch - for creating pipelines and performing operations on images:
