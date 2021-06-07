@@ -28,11 +28,12 @@ Inorder to comapre metrics generated from this module we have used traditional d
 
 ![image](https://user-images.githubusercontent.com/32778343/118484113-7b50b000-b734-11eb-938a-a8740618383e.png)
 
+Installing PyTorch:
+
+[Installation Guide]:  https://pytorch.org/get-started/locally/
 ## Tools used:
 
 1. PyTorch - for creating pipelines and performing operations on images:
-
-    [Installation Guide]:  https://pytorch.org/get-started/locally/
 2. GDAL - to work across different image formats
 3. SNAP sentinel software - To view outputs and inferences
 4. Python - Script file used to generate metrics for evaluation and convert image formats
