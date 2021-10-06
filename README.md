@@ -28,6 +28,18 @@ Inorder to comapre metrics generated from this module we have used traditional d
 
 ![image](https://user-images.githubusercontent.com/32778343/118484113-7b50b000-b734-11eb-938a-a8740618383e.png)
 
+
+### Images Output Before and After Despeckling [Regionwise Screenshots]:
+Noisy or Speckled Images   |  Despeckled or denoised Images
+:-------------------------:|:-------------------------:
+ ![0_band_1](https://user-images.githubusercontent.com/32778343/136120723-837a05b0-40c4-413d-bbf8-4804ebf6c932.jpg)|![0_band_1 (1)](https://user-images.githubusercontent.com/32778343/136120743-5b7da4a6-554a-4414-bc8e-dc06eff63169.jpg)
+  ![1_band_2](https://user-images.githubusercontent.com/32778343/136120749-fb22f616-8dfa-4bb3-b1ac-d67fdbabfe92.jpg)|![1_band_1](https://user-images.githubusercontent.com/32778343/136120768-5cfd0ff0-e720-4258-9a9f-35294f498198.jpg)
+![2_band_2](https://user-images.githubusercontent.com/32778343/136120794-25dc2213-e411-4b57-ad6a-a6bf43c3a12f.jpg)|![2_band_1](https://user-images.githubusercontent.com/32778343/136120803-346f67fe-896d-4186-a335-4b3fd51a8ad2.jpg)
+![3_band_2](https://user-images.githubusercontent.com/32778343/136120828-3917e69e-78ad-4217-a16c-e97ad5d6909f.jpg)|![3_band_1](https://user-images.githubusercontent.com/32778343/136120841-a68f1c8c-d3ec-42d8-b267-520eb9298bc2.jpg)
+![4_band_2](https://user-images.githubusercontent.com/32778343/136120857-de96546f-49ce-4a0f-9113-3a315368f74f.jpg)|![4_band_1](https://user-images.githubusercontent.com/32778343/136120868-2608c2f8-17a2-4fb6-9387-b5114aa9be65.jpg)
+
+
+
 Installing PyTorch:
 
 Installation Guide: https://pytorch.org/get-started/locally/
