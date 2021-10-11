@@ -1,4 +1,7 @@
 # PyTorchSARproject
+## Project Description:
+Synthetic Aperture Radar (SAR) is the radar technology used by satellites to capture high resolution images of the Earth’s topography. It also has application in body imaging. One of the advantages of using radar over optical sensor is that it can capture images both during day and night-time. Another obstacle overcome by the radar is that it does not get blocked by cloud cover or other atmospheric artifacts such as smoke or smog that can affect the visibility of objects or land features in the satellite feed. However, one disadvantage of using ISRO’s RISAT satellite is that a high exponential noise is produced in the images which makes it extremely grainy leading to subsequent information loss. Thus, in this project I have proposed a state-of-the-art despeckling module which uses wavelet transform and Principal on Approximation Coefficients (POAC) algorithm to remove noise from SAR Images.
+
 ![Blank diagram](https://user-images.githubusercontent.com/32778343/118477648-8c95be80-b72c-11eb-867d-748c040c010c.jpeg)
 ## How to Run Despeckle Module:
 Create two Folders in the project Directory - "Input_Imgaes" and "Output Images". Put your full size tif format images in the "Input_Images" folder. Run the wavelet_poac_module.py file then your output will be produced in the "Output_Images" folder.
